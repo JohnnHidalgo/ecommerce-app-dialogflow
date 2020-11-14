@@ -160,8 +160,7 @@ app.intent('buscarprod', (conv, { producto }) => {
         .then((snapshot) => {
             const { cost, name, type } = snapshot.data();
             conv.ask(`Producto encontrado ${name}. Costo: ${cost}. Tipo: ${type}`);
-            conv.ask(`Desea buscar más productos?, solo diga buscar y el producto que desea.`);
-            conv.ask(`Si no es así, califique a la tienda en una escala del 1 al 5 donde 1 es pésimo y 5 es exelente, Gracias!`);
+            conv.ask(`Desea buscar más productos?, solo diga buscar y el producto que desea.  Si no es así, califique a la tienda en una escala del 1 al 5 donde 1 es pésimo y 5 es exelente, Gracias!`);
         }).catch((e) => {
             console.log('error:', e);
             conv.ask(`Lo lamento no encontré ${producto}`);
@@ -169,20 +168,9 @@ app.intent('buscarprod', (conv, { producto }) => {
 
 });
 
-app.intent('calificaciónTienda', (conv, { producto }) => {
-    //conv.ask(`Desea ver los productos de: ${tienda}?`);
-    const refProd = collectionRefProd.doc(`${producto}`);
-    return refProd.get()
-        .then((snapshot) => {
-            const { cost, name, type } = snapshot.data();
-            conv.ask(`Producto encontrado ${name}. Costo: ${cost}. Tipo: ${type}`);
-            conv.ask(`Desea buscar más productos?, solo diga buscar y el producto que desea.`);
-            conv.ask(`Si no es así, califique a la tienda en una escala del 1 al 5 donde 1 es pésimo y 5 es exelente, Gracias!`);
-        }).catch((e) => {
-            console.log('error:', e);
-            conv.ask(`Lo lamento no encontré ${producto}`);
-        });
-
+app.intent('calificaciónTienda', (conv, { number }) => {
+    conv.ask(`Gracias por tu calificación.`);
+    conv.ask(`Puedes decir: menú. Para volver al menú principal`);
 });
 
 
@@ -193,28 +181,5 @@ app.intent('AddProductIntent', (conv, { product, number, agregar }) => {
     conv.ask(`Agregando: ${number} ${product}`);
 });
 
-app.intent('RequestPurchaseIntent', (conv) => {
-    conv.ask('Tipo de cliente');
-});
-
-app.intent('RequestUserIntent', (conv, { clienttype }) => {
-    conv.ask('Ok, dime ¿Que productos desea buscar?');
-});
-app.intent('RequestProductIntent', (conv, { number, product }) => {
-    conv.ask(`Este es el producto huevos?`);
-    conv.ask(new BasicCard({
-        text: 'Huevos',
-        subtitle: 'Huevos de la granja de pedro',
-        title: 'Huevos',
-        image: new Image({
-            url: 'https://s1.eestatic.com/2019/08/06/ciencia/nutricion/Alimentacion-Supermercados-Huevo-Nutricion_419468858_131721191_1024x576.jpg',
-            alt: 'Image alternate text',
-        }),
-        display: 'CROPPED',
-    }));
-});
-
 
 exports.dialogflowFirebaseFulfillment = functions.https.onRequest(app);
-//H */2 * * *
-//
