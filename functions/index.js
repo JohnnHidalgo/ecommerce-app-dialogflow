@@ -14,7 +14,6 @@ const {
     Table,
     List,
     Carousel,
-
 } = require('actions-on-google');
 
 const functions = require('firebase-functions');
@@ -139,20 +138,17 @@ app.intent('Default Welcome Intent - OPTION', (conv, params, option) => {
 
 //ACtualizar la compra
 app.intent('buscartienda', (conv, { tienda }) => {
-
     const term = planet.toLowerCase();
-    const termRef = collectionRef.doc(`${tienda}`);
+    const termRef = collectionStore.doc(`${tienda}`);
     return termRef.get()
         .then((snapshot) => {
-            const { definition, word } = snapshot.data();
-            conv.ask(`Tieda encontrada ${word}`);
-            conv.ask(`Desea ver los productos de: ${word}`);
+            const { nameStore, locationStore } = snapshot.data();
+            conv.ask(`Tieda encontrada ${nameStore}. Dirección: ${locationStore}`);
+            conv.ask(`Desea ver los productos de: ${nameStore}?`);
         }).catch((e) => {
             console.log('error:', e);
             conv.ask(`Lo lamento no encontré ${tienda}`);
         });
-
-    conv.ask(`Agregando: ${number} ${product}`);
 });
 
 app.intent('AddProductIntent', (conv, { product, number, agregar }) => {
