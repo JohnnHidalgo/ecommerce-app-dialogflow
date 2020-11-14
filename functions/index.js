@@ -2,17 +2,7 @@
 
 const {
     dialogflow,
-    SimpleResponse,
-    BasicCard,
-    Button,
     Image,
-    BrowseCarousel,
-    BrowseCarouselItem,
-    Suggestions,
-    LinkOutSuggestion,
-    MediaObject,
-    Table,
-    List,
     Carousel,
 } = require('actions-on-google');
 
@@ -21,25 +11,8 @@ const admin = require('firebase-admin');
 const app = dialogflow({ debug: true });
 admin.initializeApp();
 const db = admin.firestore();
-//const collectionRef = db.collection('planet');
 const collectionRef = db.collection('Stores');
 const collectionRefProd = db.collection('Product');
-
-//const collectionStore = db.collection('Stores');
-
-app.intent('planetaIntent', (conv, { planet }) => {
-    const term = planet.toLowerCase();
-    const termRef = collectionRef.doc(`${planet}`);
-    return termRef.get()
-        .then((snapshot) => {
-            const { definition, word } = snapshot.data();
-            conv.ask(`planeta encontrado ${word}`);
-            //conv.ask(`Here you go, ${word}, ${definition}.What else do you want to know?`);
-        }).catch((e) => {
-            console.log('error:', e);
-            conv.ask('Sorry, try again and tell me another planet.');
-        });
-});
 
 app.intent('Default Welcome Intent', (conv) => {
     if (!conv.screen) {
@@ -176,7 +149,7 @@ app.intent('calificaciónTienda', (conv, { number }) => {
 
 
 app.intent('AddProductIntent', (conv, { product, number, agregar }) => {
-    //const usersDb = db.collection('users'); 
+
 
     conv.ask(`Agregando: ${number} ${product}`);
 });
