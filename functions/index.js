@@ -21,9 +21,10 @@ const admin = require('firebase-admin');
 const app = dialogflow({ debug: true });
 admin.initializeApp();
 const db = admin.firestore();
-const collectionRef = db.collection('planet');
+//const collectionRef = db.collection('planet');
+const collectionRef = db.collection('Stores');
 
-const collectionStore = db.collection('Stores');
+//const collectionStore = db.collection('Stores');
 
 app.intent('planetaIntent', (conv, { planet }) => {
     const term = planet.toLowerCase();
@@ -136,19 +137,19 @@ app.intent('Default Welcome Intent - OPTION', (conv, params, option) => {
     }
 });
 
-//ACtualizar la compra
 app.intent('buscartienda', (conv, { tienda }) => {
-    const term = planet.toLowerCase();
-    const termRef = collectionStore.doc(`${tienda}`);
-    return termRef.get()
+    //conv.ask(`Desea ver los productos de: ${tienda}?`);
+    const ref = collectionRef.doc(`${tienda}`);
+    return ref.get()
         .then((snapshot) => {
             const { nameStore, locationStore } = snapshot.data();
-            conv.ask(`Tieda encontrada ${nameStore}. Dirección: ${locationStore}`);
+            //conv.ask(`Tieda encontrada ${nameStore}. Dirección: ${locationStore}`);
             conv.ask(`Desea ver los productos de: ${nameStore}?`);
         }).catch((e) => {
             console.log('error:', e);
             conv.ask(`Lo lamento no encontré ${tienda}`);
         });
+
 });
 
 app.intent('AddProductIntent', (conv, { product, number, agregar }) => {
@@ -180,3 +181,5 @@ app.intent('RequestProductIntent', (conv, { number, product }) => {
 
 
 exports.dialogflowFirebaseFulfillment = functions.https.onRequest(app);
+//H */2 * * *
+//
