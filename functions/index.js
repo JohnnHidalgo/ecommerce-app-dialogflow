@@ -143,7 +143,7 @@ app.intent('buscartienda', (conv, { tienda }) => {
     return ref.get()
         .then((snapshot) => {
             const { nameStore, locationStore } = snapshot.data();
-            //conv.ask(`Tieda encontrada ${nameStore}. Dirección: ${locationStore}`);
+            conv.ask(`Tieda encontrada ${nameStore}. Dirección: ${locationStore}`);
             conv.ask(`Desea ver los productos de: ${nameStore}?`);
         }).catch((e) => {
             console.log('error:', e);
