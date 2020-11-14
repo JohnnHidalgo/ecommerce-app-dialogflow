@@ -145,7 +145,7 @@ app.intent('buscartienda', (conv, { tienda }) => {
         .then((snapshot) => {
             const { nameStore, locationStore } = snapshot.data();
             conv.ask(`Tieda encontrada ${nameStore}. Dirección: ${locationStore}`);
-            conv.ask(`Desea ver los productos de: ${nameStore}?`);
+            conv.ask(`Desea ver los productos de: ${nameStore}?, solo diga buscar y el producto que desea.`);
         }).catch((e) => {
             console.log('error:', e);
             conv.ask(`Lo lamento no encontré ${tienda}`);
@@ -160,7 +160,24 @@ app.intent('buscarprod', (conv, { producto }) => {
         .then((snapshot) => {
             const { cost, name, type } = snapshot.data();
             conv.ask(`Producto encontrado ${name}. Costo: ${cost}. Tipo: ${type}`);
-            conv.ask(`Desea ver los productos de: ${name}?`);
+            conv.ask(`Desea buscar más productos?, solo diga buscar y el producto que desea.`);
+            conv.ask(`Si no es así, califique a la tienda en una escala del 1 al 5 donde 1 es pésimo y 5 es exelente, Gracias!`);
+        }).catch((e) => {
+            console.log('error:', e);
+            conv.ask(`Lo lamento no encontré ${producto}`);
+        });
+
+});
+
+app.intent('calificaciónTienda', (conv, { producto }) => {
+    //conv.ask(`Desea ver los productos de: ${tienda}?`);
+    const refProd = collectionRefProd.doc(`${producto}`);
+    return refProd.get()
+        .then((snapshot) => {
+            const { cost, name, type } = snapshot.data();
+            conv.ask(`Producto encontrado ${name}. Costo: ${cost}. Tipo: ${type}`);
+            conv.ask(`Desea buscar más productos?, solo diga buscar y el producto que desea.`);
+            conv.ask(`Si no es así, califique a la tienda en una escala del 1 al 5 donde 1 es pésimo y 5 es exelente, Gracias!`);
         }).catch((e) => {
             console.log('error:', e);
             conv.ask(`Lo lamento no encontré ${producto}`);
