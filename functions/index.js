@@ -23,6 +23,7 @@ admin.initializeApp();
 const db = admin.firestore();
 //const collectionRef = db.collection('planet');
 const collectionRef = db.collection('Stores');
+const collectionRefProd = db.collection('Product');
 
 //const collectionStore = db.collection('Stores');
 
@@ -151,6 +152,23 @@ app.intent('buscartienda', (conv, { tienda }) => {
         });
 
 });
+
+app.intent('buscarprod', (conv, { producto }) => {
+    //conv.ask(`Desea ver los productos de: ${tienda}?`);
+    const refProd = collectionRefProd.doc(`${producto}`);
+    return refProd.get()
+        .then((snapshot) => {
+            const { cost, name, type } = snapshot.data();
+            conv.ask(`Producto encontrado ${name}. Costo: ${cost}. Tipo: ${type}`);
+            conv.ask(`Desea ver los productos de: ${name}?`);
+        }).catch((e) => {
+            console.log('error:', e);
+            conv.ask(`Lo lamento no encontré ${producto}`);
+        });
+
+});
+
+
 
 app.intent('AddProductIntent', (conv, { product, number, agregar }) => {
     //const usersDb = db.collection('users'); 
