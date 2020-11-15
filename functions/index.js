@@ -20,7 +20,6 @@ app.intent('Default Welcome Intent', (conv) => {
 
 });
 
-
 app.intent('UserIntent', (conv) => {
     if (!conv.screen) {
         conv.ask('Lo lamento, intenta acceder a través de un dispocitivo con pantalla');
@@ -92,7 +91,6 @@ app.intent('UserIntent - custom', (conv, params, option) => {
     }
 });
 
-
 app.intent('ClientIntent', (conv) => {
     if (!conv.screen) {
         conv.ask('Lo lamento, intenta acceder a través de un dispocitivo con pantalla');
@@ -130,9 +128,6 @@ app.intent('ClientIntent - custom', (conv, params, option) => {
     conv.ask(`${SELECTED_ITEM_RESPONSES[option]}`);
 });
 
-
-
-
 app.intent('buscartienda', (conv, { tienda }) => {
     //conv.ask(`Desea ver los productos de: ${tienda}?`);
     const ref = collectionRef.doc(`${tienda}`);
@@ -169,10 +164,8 @@ app.intent('calificaciónTienda', (conv, { number }) => {
 });
 
 
-
 app.intent('AddProductIntent', (conv, { product, number, agregar }) => {
     conv.ask(`Agregando: ${number} ${product}`);
 });
-
 
 exports.dialogflowFirebaseFulfillment = functions.https.onRequest(app);
