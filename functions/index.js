@@ -15,6 +15,13 @@ const collectionRef = db.collection('Stores');
 const collectionRefProd = db.collection('Product');
 
 app.intent('Default Welcome Intent', (conv) => {
+    conv.ask('Hola! bienvenido a BIAS');
+    conv.ask('Deseas iniciar Seción como Administrador o Cliente?');
+
+});
+
+
+app.intent('UserIntent', (conv) => {
     if (!conv.screen) {
         conv.ask('Lo lamento, intenta acceder a través de un dispocitivo con pantalla');
         return;
@@ -23,30 +30,6 @@ app.intent('Default Welcome Intent', (conv) => {
     conv.ask(new Carousel({
         title: 'Mi tienda Kuinbi',
         items: {
-
-            'BusquedaT': {
-                synonyms: [
-                    'BusquedaT'
-                ],
-                title: 'Buscar Tienda',
-                description: 'Mi tienda Kuibi.',
-                image: new Image({
-                    url: 'https://www.enriquedans.com/wp-content/uploads/2016/09/shopping-cart.jpg',
-                    alt: 'Realizar una Busqueda',
-                }),
-            },
-
-            'Busqueda': {
-                synonyms: [
-                    'Busqueda'
-                ],
-                title: 'Busqueda',
-                description: 'Mi tienda Kuibi.',
-                image: new Image({
-                    url: 'https://www.enriquedans.com/wp-content/uploads/2016/09/shopping-cart.jpg',
-                    alt: 'Realizar una Busqueda',
-                }),
-            },
             'AgregarProductos': {
                 synonyms: [
                     'AgergarProductos'
@@ -84,7 +67,7 @@ app.intent('Default Welcome Intent', (conv) => {
     }));
 });
 
-app.intent('Default Welcome Intent - OPTION', (conv, params, option) => {
+app.intent('UserIntent - custom', (conv, params, option) => {
     if (!conv.screen ||
         !conv.surface.capabilities.has('actions.capability.WEB_BROWSER')) {
         conv.ask('Lo lamento, por favor use un teléfono móvil.');
@@ -92,8 +75,6 @@ app.intent('Default Welcome Intent - OPTION', (conv, params, option) => {
     }
 
     const SELECTED_ITEM_RESPONSES = {
-        'BusquedaT': 'Nombre de la Tienda',
-        'Busqueda': 'Tipo de cliente',
         'AgregarProductos': 'Dime que producto y cuantas unidades estás agregando al inventario',
         'Inventario': 'B',
         'Ventas': 'A',
@@ -110,6 +91,47 @@ app.intent('Default Welcome Intent - OPTION', (conv, params, option) => {
 
     }
 });
+
+
+app.intent('ClientIntent', (conv) => {
+    if (!conv.screen) {
+        conv.ask('Lo lamento, intenta acceder a través de un dispocitivo con pantalla');
+        return;
+    }
+    conv.ask('Hola! bienvenido a Kuinbi');
+    conv.ask(new Carousel({
+        title: 'BIAS e-commerce',
+        items: {
+            'BusquedaT': {
+                synonyms: [
+                    'BusquedaT'
+                ],
+                title: 'Buscar Tienda',
+                description: 'Mi tienda Kuibi.',
+                image: new Image({
+                    url: 'https://www.enriquedans.com/wp-content/uploads/2016/09/shopping-cart.jpg',
+                    alt: 'Realizar una Busqueda',
+                }),
+            },
+
+        },
+    }));
+});
+
+app.intent('ClientIntent - custom', (conv, params, option) => {
+    if (!conv.screen ||
+        !conv.surface.capabilities.has('actions.capability.WEB_BROWSER')) {
+        conv.ask('Lo lamento, por favor use un teléfono móvil.');
+        return;
+    }
+    const SELECTED_ITEM_RESPONSES = {
+        'BusquedaT': 'Nombre de la Tienda',
+    };
+    conv.ask(`${SELECTED_ITEM_RESPONSES[option]}`);
+});
+
+
+
 
 app.intent('buscartienda', (conv, { tienda }) => {
     //conv.ask(`Desea ver los productos de: ${tienda}?`);
@@ -149,8 +171,6 @@ app.intent('calificaciónTienda', (conv, { number }) => {
 
 
 app.intent('AddProductIntent', (conv, { product, number, agregar }) => {
-
-
     conv.ask(`Agregando: ${number} ${product}`);
 });
 
