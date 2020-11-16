@@ -163,9 +163,22 @@ app.intent('calificaciónTienda', (conv, { number }) => {
     conv.ask(`Puedes decir: menú. Para volver al menú principal`);
 });
 
-
-app.intent('AddProductIntent', (conv, { product, number, agregar }) => {
-    conv.ask(`Agregando: ${number} ${product}`);
+app.intent('AddProductIntent', (conv, { product, number, agregar, productType, productDesc }) => {
+    const liam = collectionRefProd.doc(product);
+    return liam.set({
+        code: 45003,
+        cost: number,
+        description: productDesc,
+        idProduct: 6,
+        name: product,
+        quantity: 15,
+        type: productType
+    }).then((snapshot) => {
+        conv.ask(`Agregando: ${number} ${product}`);
+    }).catch((e) => {
+        conv.ask(`Puedes decir menu para volver al menú principal`);
+    });
 });
+
 
 exports.dialogflowFirebaseFulfillment = functions.https.onRequest(app);
